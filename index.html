@@ -129,7 +129,7 @@ body { font-family:'Inter',-apple-system,sans-serif; background:var(--bg); color
 /* ── RESULT ── */
 .result-head { padding:40px 0 32px; }
 .score-line { display:flex; align-items:baseline; gap:6px; margin-bottom:6px; }
-.score-n { font-family:'Syne',sans-serif; font-size:60px; font-weight:800; color:var(--text); line-height:1; letter-spacing:-2px; }
+.score-n { font-family:'Inter',sans-serif; font-size:60px; font-weight:800; color:var(--text); line-height:1; letter-spacing:-2px; }
 .score-pct { font-size:20px; font-weight:700; color:var(--faint); }
 .verdict { font-size:13px; color:var(--muted); margin-top:4px; }
 .stats-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin:28px 0; }
@@ -147,6 +147,11 @@ body { font-family:'Inter',-apple-system,sans-serif; background:var(--bg); color
 .w-tip { font-size:12px; color:var(--muted); margin-top:12px; line-height:1.8; }
 .r-list { display:flex; flex-direction:column; gap:8px; }
 .r-item { background:var(--bg-card); border:1.5px solid var(--divider); border-radius:var(--r); padding:16px; }
+.r-item.r-correct { border-color:#6fcf97; }
+.r-item.r-wrong   { border-color:#e88; }
+.r-badge { display:inline-flex; align-items:center; gap:5px; font-size:10px; font-weight:700; letter-spacing:0.06em; padding:3px 9px; border-radius:20px; margin-bottom:10px; }
+.r-badge.correct { background:var(--green-bg); color:var(--green); }
+.r-badge.wrong   { background:var(--red-bg); color:var(--red); }
 .r-q { font-family:'Noto Serif JP',serif; font-size:13px; font-weight:700; color:var(--text); line-height:1.7; margin-bottom:10px; }
 .r-row { font-size:12px; padding:5px 10px; border-radius:5px; margin-bottom:4px; }
 .r-row.w { background:var(--red-bg); color:var(--red); }
@@ -156,6 +161,12 @@ body { font-family:'Inter',-apple-system,sans-serif; background:var(--bg); color
 .retry-btn:hover { background:var(--bg-dark-hover); }
 .back-top-btn { display:block; width:100%; max-width:180px; margin:8px auto 0; padding:11px; background:transparent; color:var(--faint); border:none; border-radius:var(--r); font-size:12px; font-weight:600; cursor:pointer; font-family:inherit; transition:color 0.1s; }
 .back-top-btn:hover { color:var(--muted); }
+.cta-box { margin-top:32px; background:var(--bg-dark); border-radius:12px; padding:28px 24px; text-align:center; }
+.cta-box-label { font-size:10px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#8898d0; margin-bottom:12px; }
+.cta-box-title { font-family:'Noto Serif JP',serif; font-size:17px; font-weight:700; color:#fff; line-height:1.55; margin-bottom:10px; }
+.cta-box-desc { font-size:12px; color:#8898d0; line-height:1.8; margin-bottom:20px; }
+.cta-box-btn { display:inline-block; padding:12px 28px; background:#fff; color:var(--bg-dark); border:none; border-radius:var(--r); font-size:13px; font-weight:700; cursor:pointer; font-family:inherit; text-decoration:none; transition:opacity 0.1s; }
+.cta-box-btn:hover { opacity:0.88; }
 
 @media(max-width:460px){
   .test-grid { grid-template-columns:1fr; }
@@ -246,6 +257,12 @@ body { font-family:'Inter',-apple-system,sans-serif; background:var(--bg); color
   <div class="w-list" id="w-list"></div>
   <div class="sec-ttl">復習</div>
   <div class="r-list" id="r-list"></div>
+  <div class="cta-box">
+    <div class="cta-box-label">Career Support</div>
+    <div class="cta-box-title">コンサル転職の<br>キャリア面談を申し込む</div>
+    <div class="cta-box-desc">弱点が見えたら、次はプロに相談してみませんか。<br>WowCraftのエージェントが選考対策から内定まで無料でサポートします。</div>
+    <a class="cta-box-btn" href="https://docs.google.com/forms/d/e/1FAIpQLScYDoNKFaZW-jCvWLrN9g_p0aNCmbWbmjGjAGZYYBHlFscbEg/viewform" target="_blank">無料面談を申し込む →</a>
+  </div>
   <button class="retry-btn" id="retry-btn">もう一度解く</button>
   <button class="back-top-btn" id="back-top-btn">テスト選択に戻る</button>
 </div>
@@ -631,13 +648,19 @@ function showResult(){
   const rl=document.getElementById('r-list');rl.innerHTML='';
   const lb=['A','B','C','D'];
   qs.forEach((q,i)=>{
-    if(ans[i]===q.ans)return;
-    const d=document.createElement('div');d.className='r-item';
+    const isCorrect=ans[i]===q.ans;
+    const d=document.createElement('div');
+    d.className='r-item '+(isCorrect?'r-correct':'r-wrong');
     const ya=ans[i]>=0?q.choices[ans[i]]:'（未回答）';
-    d.innerHTML=`<div class="r-q">${i+1}. ${q.q}</div><div class="r-row w">あなたの回答 — ${lb[Math.max(0,ans[i])]}  ${ya}</div><div class="r-row c">正解 — ${lb[q.ans]}  ${q.choices[q.ans]}</div><div class="r-exp">${q.exp}</div>`;
+    const badgeHtml=isCorrect
+      ? `<div class="r-badge correct">✓ 正解</div>`
+      : `<div class="r-badge wrong">✗ 不正解</div>`;
+    const answerHtml=isCorrect
+      ? `<div class="r-row c">正解 — ${lb[q.ans]}  ${q.choices[q.ans]}</div>`
+      : `<div class="r-row w">あなたの回答 — ${lb[Math.max(0,ans[i])]}  ${ya}</div><div class="r-row c">正解 — ${lb[q.ans]}  ${q.choices[q.ans]}</div>`;
+    d.innerHTML=`${badgeHtml}<div class="r-q">${i+1}. ${q.q}</div>${answerHtml}<div class="r-exp">${q.exp}</div>`;
     rl.appendChild(d);
   });
-  if(!rl.children.length)rl.innerHTML='<p style="font-size:13px;color:#aaa;padding:12px 0">全問正解です。</p>';
 
   showScreen('result');
 }
