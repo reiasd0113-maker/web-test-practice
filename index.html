@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>コンサルティングファーム Webテスト 練習問題</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&family=Inter:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
@@ -17,7 +17,7 @@
   --accent:#2a3f8f;
   --r:8px;
 }
-body { font-family:'Inter',-apple-system,sans-serif; background:var(--bg); color:var(--text); min-height:100vh; font-size:15px; line-height:1.6; -webkit-font-smoothing:antialiased; }
+body { font-family:'Noto Sans JP','Hiragino Sans','Yu Gothic UI',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; font-size:15px; line-height:1.6; -webkit-font-smoothing:antialiased; }
 .wrap { max-width:580px; margin:0 auto; padding:0 20px 80px; }
 .screen { display:none; }
 .screen.active { display:block; }
@@ -27,7 +27,7 @@ body { font-family:'Inter',-apple-system,sans-serif; background:var(--bg); color
 /* ── SELECT (テスト種別選択) ── */
 .sel-nav { padding:32px 0 0; }
 .sel-hero { padding:44px 0 36px; }
-.sel-hero h1 { font-family:'Noto Serif JP',serif; font-size:26px; font-weight:800; line-height:1.35; color:var(--text); margin-bottom:12px; letter-spacing:-0.3px; }
+.sel-hero h1 { font-family:'Noto Sans JP',sans-serif; font-size:26px; font-weight:800; line-height:1.35; color:var(--text); margin-bottom:12px; letter-spacing:-0.3px; }
 .sel-hero p { font-size:13px; color:var(--muted); line-height:1.9; }
 
 .test-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px; }
@@ -37,7 +37,7 @@ body { font-family:'Inter',-apple-system,sans-serif; background:var(--bg); color
   text-align:left;
 }
 .test-card:hover { border-color:#b0bcd8; background:var(--bg-hover); }
-.test-card-name { font-family:'Noto Serif JP',serif; font-size:15px; font-weight:700; color:var(--text); margin-bottom:5px; }
+.test-card-name { font-family:'Noto Sans JP',sans-serif; font-size:15px; font-weight:700; color:var(--text); margin-bottom:5px; }
 .test-card-desc { font-size:11px; color:var(--muted); line-height:1.7; }
 .test-card-tags { display:flex; gap:5px; margin-top:10px; flex-wrap:wrap; }
 .tag { font-size:10px; font-weight:700; background:var(--bg); color:var(--accent); padding:2px 7px; border-radius:4px; letter-spacing:0.04em; border:1px solid var(--divider); }
@@ -55,7 +55,7 @@ body { font-family:'Inter',-apple-system,sans-serif; background:var(--bg); color
 }
 .back-btn:hover { color:var(--muted); }
 .top-hero { padding:32px 0 28px; }
-.top-hero h1 { font-family:'Noto Serif JP',serif; font-size:24px; font-weight:800; line-height:1.35; color:var(--text); margin-bottom:8px; letter-spacing:-0.3px; }
+.top-hero h1 { font-family:'Noto Sans JP',sans-serif; font-size:24px; font-weight:800; line-height:1.35; color:var(--text); margin-bottom:8px; letter-spacing:-0.3px; }
 .top-hero p { font-size:13px; color:var(--muted); line-height:1.9; }
 
 .cat-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:28px; }
@@ -96,7 +96,7 @@ body { font-family:'Inter',-apple-system,sans-serif; background:var(--bg); color
 .timer.warn { color:#c0392b; }
 .prog { height:2px; background:var(--divider); margin-bottom:36px; }
 .prog-fill { height:100%; background:var(--bg-dark); transition:width 0.3s; }
-.q-text { font-family:'Noto Serif JP',serif; font-size:17px; font-weight:700; color:var(--text); line-height:1.7; margin-bottom:24px; }
+.q-text { font-family:'Noto Sans JP',sans-serif; font-size:17px; font-weight:700; color:var(--text); line-height:1.7; margin-bottom:24px; }
 .q-passage { font-size:13px; color:var(--muted); line-height:1.9; background:var(--bg-card); border-radius:var(--r); padding:16px; margin-bottom:20px; border-left:2px solid var(--divider); }
 .choices { display:flex; flex-direction:column; gap:7px; margin-bottom:24px; }
 .choice { display:flex; align-items:flex-start; gap:13px; padding:13px 15px; background:var(--bg-card); border:1.5px solid var(--divider); border-radius:var(--r); cursor:pointer; transition:border-color 0.1s,background 0.1s; }
@@ -108,7 +108,7 @@ body { font-family:'Inter',-apple-system,sans-serif; background:var(--bg); color
 .choice.selected .choice-lbl { background:rgba(255,255,255,0.2); color:#fff; }
 .choice.correct  .choice-lbl { background:var(--green); color:#fff; }
 .choice.wrong    .choice-lbl { background:var(--red);   color:#fff; }
-.choice-txt { font-size:14px; color:var(--text); line-height:1.6; padding-top:2px; }
+.choice-txt { font-size:14px; font-family:'Noto Sans JP','Hiragino Sans','Yu Gothic UI',sans-serif; color:var(--text); line-height:1.6; padding-top:2px; }
 .choice.selected .choice-txt { color:#fff; }
 .choice.correct  .choice-txt { color:var(--green); font-weight:600; }
 .choice.wrong    .choice-txt { color:var(--red); }
@@ -129,7 +129,7 @@ body { font-family:'Inter',-apple-system,sans-serif; background:var(--bg); color
 /* ── RESULT ── */
 .result-head { padding:40px 0 32px; }
 .score-line { display:flex; align-items:baseline; gap:6px; margin-bottom:6px; }
-.score-n { font-family:'Inter',sans-serif; font-size:60px; font-weight:800; color:var(--text); line-height:1; letter-spacing:-2px; }
+.score-n { font-family:'Noto Sans JP',sans-serif; font-size:60px; font-weight:800; color:var(--text); line-height:1; letter-spacing:-2px; }
 .score-pct { font-size:20px; font-weight:700; color:var(--faint); }
 .verdict { font-size:13px; color:var(--muted); margin-top:4px; }
 .stats-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin:28px 0; }
@@ -152,7 +152,7 @@ body { font-family:'Inter',-apple-system,sans-serif; background:var(--bg); color
 .r-badge { display:inline-flex; align-items:center; gap:5px; font-size:10px; font-weight:700; letter-spacing:0.06em; padding:3px 9px; border-radius:20px; margin-bottom:10px; }
 .r-badge.correct { background:var(--green-bg); color:var(--green); }
 .r-badge.wrong   { background:var(--red-bg); color:var(--red); }
-.r-q { font-family:'Noto Serif JP',serif; font-size:13px; font-weight:700; color:var(--text); line-height:1.7; margin-bottom:10px; }
+.r-q { font-family:'Noto Sans JP',sans-serif; font-size:13px; font-weight:700; color:var(--text); line-height:1.7; margin-bottom:10px; }
 .r-row { font-size:12px; padding:5px 10px; border-radius:5px; margin-bottom:4px; }
 .r-row.w { background:var(--red-bg); color:var(--red); }
 .r-row.c { background:var(--green-bg); color:var(--green); }
@@ -163,7 +163,7 @@ body { font-family:'Inter',-apple-system,sans-serif; background:var(--bg); color
 .back-top-btn:hover { color:var(--muted); }
 .cta-box { margin-top:32px; background:var(--bg-dark); border-radius:12px; padding:28px 24px; text-align:center; }
 .cta-box-label { font-size:10px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#8898d0; margin-bottom:12px; }
-.cta-box-title { font-family:'Noto Serif JP',serif; font-size:17px; font-weight:700; color:#fff; line-height:1.55; margin-bottom:10px; }
+.cta-box-title { font-family:'Noto Sans JP',sans-serif; font-size:17px; font-weight:700; color:#fff; line-height:1.55; margin-bottom:10px; }
 .cta-box-desc { font-size:12px; color:#8898d0; line-height:1.8; margin-bottom:20px; }
 .cta-box-btn { display:inline-block; padding:12px 28px; background:#fff; color:var(--bg-dark); border:none; border-radius:var(--r); font-size:13px; font-weight:700; cursor:pointer; font-family:inherit; text-decoration:none; transition:opacity 0.1s; }
 .cta-box-btn:hover { opacity:0.88; }
@@ -260,7 +260,7 @@ body { font-family:'Inter',-apple-system,sans-serif; background:var(--bg); color
   <div class="cta-box">
     <div class="cta-box-label">Career Support</div>
     <div class="cta-box-title">コンサル転職の<br>キャリア面談を申し込む</div>
-    <div class="cta-box-desc">弱点が見えたら、次はプロに相談してみませんか。<br>WowCraftのエージェントが選考対策から内定まで無料でサポートします。</div>
+    <div class="cta-box-desc">弱点が見えたら、次はプロに相談してみませんか。<br>選考対策から内定まで無料でサポートします。</div>
     <a class="cta-box-btn" href="https://docs.google.com/forms/d/e/1FAIpQLScYDoNKFaZW-jCvWLrN9g_p0aNCmbWbmjGjAGZYYBHlFscbEg/viewform" target="_blank">無料面談を申し込む →</a>
   </div>
   <button class="retry-btn" id="retry-btn">もう一度解く</button>
