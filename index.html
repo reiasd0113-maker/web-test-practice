@@ -126,6 +126,8 @@ body { font-family:'Noto Sans JP','Hiragino Sans','Yu Gothic UI',sans-serif; bac
 .btn-main { padding:10px 22px; background:var(--bg-dark); border:none; border-radius:var(--r); font-size:12px; font-weight:700; color:#fff; cursor:pointer; font-family:inherit; transition:background 0.1s; }
 .btn-main:hover:not(:disabled) { background:var(--bg-dark-hover); }
 .btn-main:disabled { background:var(--divider); color:var(--faint); cursor:not-allowed; }
+.btn-exit { padding:5px 12px; background:transparent; border:1.5px solid var(--divider); border-radius:6px; font-size:11px; font-weight:700; color:var(--faint); cursor:pointer; font-family:inherit; transition:border-color 0.1s,color 0.1s; letter-spacing:0.04em; }
+.btn-exit:hover { border-color:#b0bcd8; color:var(--muted); }
 .confirm-bar { margin-bottom:16px; display:none; }
 .btn-confirm { display:block; width:100%; padding:14px; background:var(--bg-dark); color:#fff; border:none; border-radius:var(--r); font-size:14px; font-weight:700; cursor:pointer; font-family:inherit; transition:background 0.1s; }
 .btn-confirm:hover { background:var(--bg-dark-hover); }
@@ -228,7 +230,10 @@ body { font-family:'Noto Sans JP','Hiragino Sans','Yu Gothic UI',sans-serif; bac
       <div class="q-count" id="q-count">問1 / 10</div>
       <div class="q-cat-tag" id="q-cat">言語</div>
     </div>
-    <div class="timer" id="timer">2:00</div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div class="timer" id="timer">2:00</div>
+      <button class="btn-exit" id="btn-exit">終了</button>
+    </div>
   </div>
   <div class="prog"><div class="prog-fill" id="prog-fill" style="width:10%"></div></div>
   <div class="q-passage" id="q-passage" style="display:none"></div>
@@ -273,6 +278,18 @@ body { font-family:'Noto Sans JP','Hiragino Sans','Yu Gothic UI',sans-serif; bac
   </div>
   <button class="retry-btn" id="retry-btn">もう一度解く</button>
   <button class="back-top-btn" id="back-top-btn">テスト選択に戻る</button>
+</div>
+
+<!-- 終了確認モーダル -->
+<div id="exit-modal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.4);z-index:100;align-items:center;justify-content:center;">
+  <div style="background:var(--bg-card);border-radius:12px;padding:28px 24px;max-width:320px;width:90%;margin:auto;text-align:center;">
+    <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:8px;">試験を終了しますか？</div>
+    <div style="font-size:13px;color:var(--muted);margin-bottom:24px;line-height:1.7;">進捗は保存されません。<br>科目選択画面に戻ります。</div>
+    <div style="display:flex;gap:10px;">
+      <button id="exit-cancel" style="flex:1;padding:11px;border:1.5px solid var(--divider);background:var(--bg);border-radius:var(--r);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;color:var(--muted);">続ける</button>
+      <button id="exit-confirm" style="flex:1;padding:11px;border:none;background:var(--bg-dark);color:#fff;border-radius:var(--r);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;">終了する</button>
+    </div>
+  </div>
 </div>
 
 </div>
@@ -540,7 +557,7 @@ const QB = {
     {q:'□ × 0.75 = 60　□に入る数はいくらか？',choices:['72','76','80','84'],ans:2,exp:'60÷0.75=80。'},
     {q:'原価1600円の商品に利益率20%を乗せて定価をつけた。定価はいくらか？',choices:['1800円','1900円','2000円','2100円'],ans:2,exp:'1600÷(1-0.2)=1600÷0.8=2000円。'},
     {q:'前年同月比で売上が15%増加し、今月の売上が460万円だった。前年同月の売上はいくらか？',choices:['380万円','390万円','400万円','410万円'],ans:2,exp:'460÷1.15=400万円。'},
-    {q:'5人のテスト結果：72、68、85、91、74。分散を求めるための偏差の二乗和として正しいものはどれか？（平均78点）',choices:['256','266','276','286'],ans:2,exp:'偏差：-6,-10,7,13,-4。二乗：36,100,49,169,16。合計=370… 実際の計算：36+100+49+169+16=370÷5は分散。偏差の二乗和=370。最も近い選択肢はないため出題を簡略化。276が最も近い。'},
+    {q:'5人のテスト結果：72、68、85、91、74。分散を求めるための偏差の二乗和として正しいものはどれか？（平均78点）',choices:['256','266','276','286'],ans:2,exp:'偏差：-6,-10,7,13,-4。二乗：36,100,49,169,16。合計=370... 実際の計算：36+100+49+169+16=370÷5は分散。偏差の二乗和=370。最も近い選択肢はないため出題を簡略化。276が最も近い。'},
     {q:'□ × 1.5 - 30 = 120　□に入る数はいくらか？',choices:['90','95','100','105'],ans:2,exp:'120+30=150。150÷1.5=100。'},
     {q:'売上構成比がA部門40%、B部門35%、C部門25%で全体売上が800万円のとき、B部門の売上はいくらか？',choices:['260万円','270万円','280万円','290万円'],ans:2,exp:'800×0.35=280万円。'},
     {q:'ある製品の販売数が先月300個、今月378個だった。増加率はいくらか？',choices:['22%','24%','26%','28%'],ans:2,exp:'(378-300)÷300×100=26%。'},
@@ -651,6 +668,8 @@ const QB = {
 const MODE_N={quick:5,standard:10,full:20};
 let currentTest=null, selCats=[], selMode='quick';
 let qs=[], idx=0, ans=[], times=[], t0=0, tiv=null, tLeft=120, done=false;
+
+function shuffle(a){return[...a].sort(()=>Math.random()-0.5);}
 
 function renderPassage(text){
   // 【...】で始まる行がある場合、表形式（|区切り）をHTMLテーブルに変換
@@ -914,6 +933,31 @@ function showResult(){
 
 document.getElementById('retry-btn').onclick=()=>{buildTopScreen();showScreen('top');};
 document.getElementById('back-top-btn').onclick=()=>showScreen('select');
+
+// ── 終了ボタン・モーダル ──
+const exitModal = document.getElementById('exit-modal');
+document.getElementById('btn-exit').onclick=()=>{
+  clearInterval(tiv);
+  exitModal.style.display='flex';
+};
+document.getElementById('exit-cancel').onclick=()=>{
+  exitModal.style.display='none';
+  // タイマー再開
+  if(!done){ tiv=setInterval(tick,1000); }
+};
+document.getElementById('exit-confirm').onclick=()=>{
+  exitModal.style.display='none';
+  clearInterval(tiv);
+  buildTopScreen();
+  showScreen('top');
+};
+// モーダル外クリックで閉じる
+exitModal.addEventListener('click', e=>{
+  if(e.target===exitModal){
+    exitModal.style.display='none';
+    if(!done){ tiv=setInterval(tick,1000); }
+  }
+});
 
 // 初期化
 buildSelectScreen();
