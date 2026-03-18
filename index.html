@@ -98,6 +98,10 @@ body { font-family:'Noto Sans JP','Hiragino Sans','Yu Gothic UI',sans-serif; bac
 .prog-fill { height:100%; background:var(--bg-dark); transition:width 0.3s; }
 .q-text { font-family:'Noto Sans JP',sans-serif; font-size:17px; font-weight:700; color:var(--text); line-height:1.7; margin-bottom:24px; }
 .q-passage { font-size:13px; color:var(--muted); line-height:1.9; background:var(--bg-card); border-radius:var(--r); padding:16px; margin-bottom:20px; border-left:2px solid var(--divider); }
+.q-passage table { width:100%; border-collapse:collapse; margin-top:8px; font-size:12px; }
+.q-passage th { background:var(--bg-hover); color:var(--text); font-weight:700; padding:6px 10px; border:1px solid var(--divider); text-align:center; }
+.q-passage td { padding:5px 10px; border:1px solid var(--divider); text-align:right; color:var(--text); }
+.q-passage td:first-child { text-align:left; font-weight:600; color:var(--text); }
 .choices { display:flex; flex-direction:column; gap:7px; margin-bottom:24px; }
 .choice { display:flex; align-items:flex-start; gap:13px; padding:13px 15px; background:var(--bg-card); border:1.5px solid var(--divider); border-radius:var(--r); cursor:pointer; transition:border-color 0.1s,background 0.1s; }
 .choice:hover { border-color:#b0bcd8; background:var(--bg-hover); }
@@ -648,7 +652,45 @@ const MODE_N={quick:5,standard:10,full:20};
 let currentTest=null, selCats=[], selMode='quick';
 let qs=[], idx=0, ans=[], times=[], t0=0, tiv=null, tLeft=120, done=false;
 
-function shuffle(a){return[...a].sort(()=>Math.random()-0.5);}
+function renderPassage(text){
+  // 【...】で始まる行がある場合、表形式（|区切り）をHTMLテーブルに変換
+  const lines = text.split('\n');
+  let html = '';
+  let tableLines = [];
+  let preamble = '';
+
+  // 【ラベル】部分とテーブル行を分離
+  lines.forEach(line => {
+    if(line.includes('|')){
+      tableLines.push(line);
+    } else {
+      if(tableLines.length===0) preamble += line + ' ';
+      // 表の後の行は無視（passageは表のみ想定）
+    }
+  });
+
+  if(tableLines.length > 0){
+    // preamble（【売上表】など）
+    if(preamble.trim()){
+      html += `<div style="font-size:11px;font-weight:700;color:var(--accent);margin-bottom:6px;letter-spacing:0.04em;">${preamble.trim()}</div>`;
+    }
+    // テーブル生成
+    html += '<table><thead>';
+    tableLines.forEach((line, i) => {
+      const cells = line.split('|').map(c => c.trim()).filter(c => c!=='');
+      if(i===0){
+        html += '<tr>' + cells.map(c=>`<th>${c}</th>`).join('') + '</tr></thead><tbody>';
+      } else {
+        html += '<tr>' + cells.map(c=>`<td>${c}</td>`).join('') + '</tr>';
+      }
+    });
+    html += '</tbody></table>';
+  } else {
+    // 通常のテキストpassage（改行を<br>に）
+    html = text.replace(/\n/g,'<br>');
+  }
+  return html;
+}
 
 function showScreen(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
@@ -739,8 +781,12 @@ function renderQ(){
   document.getElementById('prog-fill').style.width=((idx+1)/qs.length*100)+'%';
 
   const passEl=document.getElementById('q-passage');
-  if(q.passage){passEl.textContent=q.passage;passEl.style.display='block';}
-  else{passEl.style.display='none';}
+  if(q.passage){
+    passEl.innerHTML=renderPassage(q.passage);
+    passEl.style.display='block';
+  } else {
+    passEl.style.display='none';
+  }
 
   document.getElementById('q-text').textContent=q.q;
   document.getElementById('explanation').style.display='none';
